@@ -51,8 +51,8 @@ public class Percolation {
 //        perc.open(0, 0);
 
 //        perc.printSizes();
-        perc.print();
-        System.out.println(perc.percolates());
+//        perc.print();
+//        System.out.println(perc.percolates());
     }
 
     private int[][] elements;
@@ -67,7 +67,6 @@ public class Percolation {
                 elements[i][j] = -1;
                 sizes[i][j] = 0;
             }
-
     }
 
     private int index(int row, int col) {
@@ -85,9 +84,6 @@ public class Percolation {
     private int root(int index) {
         int parentIndex = index;
         int i = deindexRow(index), j = deindexCol(index);
-
-        System.out.println(i);
-        System.out.println(j);
 
         while(parentIndex != elements[i][j]) {
             parentIndex = elements[i][j];
@@ -158,10 +154,13 @@ public class Percolation {
 
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
-        // grader starts arrays at 1 (ew)
+        if(isOpen(row, col))
+            return;
+
+        // grader starts arrays at 1
         row--;
         col--;
-
+        
         elements[row][col] = index(row, col);
         sizes[row][col] = 1;
 
@@ -182,12 +181,10 @@ public class Percolation {
     // is site (row, col) open?
     // row and col starts at 1
     public boolean isOpen(int row, int col) {
-        row--;
-        col--;
-        if(!inBounds(row, col))
-            return false;
+        if(!inBounds(row - 1, col - 1))
+            throw new ArrayIndexOutOfBoundsException();
 
-        return elements[row][col] >= 0;
+        return elements[row - 1][col - 1] >= 0;
     }
 
     private boolean isOpen(int index) {
@@ -197,8 +194,11 @@ public class Percolation {
 
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
-        if(!inBounds(row - 1, col - 1) || !isOpen(row, col))
+        if(!inBounds(row - 1, col - 1))
+            throw new ArrayIndexOutOfBoundsException();
+        else if(!isOpen(row, col)) {
             return false;
+        }
 
         int rootIndex = root(index(row - 1, col - 1));
         for(int j = 1; j <= elements.length; j++) {
