@@ -160,7 +160,7 @@ public class Percolation {
         // grader starts arrays at 1
         row--;
         col--;
-        
+
         elements[row][col] = index(row, col);
         sizes[row][col] = 1;
 
