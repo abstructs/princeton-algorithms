@@ -17,9 +17,8 @@ public class Percolation {
         for(int i = 1; i < Math.sqrt(size); i++)
             weightedQuickUnionUF.union(0, i);
 
-//        System.out.println(isOpen(1, 1));
-        for(int i = 0; i < Math.sqrt(size); i++) {
-            int cell = size - i - 2;
+        for(int i = 1; i < Math.sqrt(size); i++) {
+            int cell = size - i - 1;
             weightedQuickUnionUF.union(size - 1, cell);
         }
     }
@@ -32,6 +31,10 @@ public class Percolation {
         return index >= 0 && index < size;
     }
 
+    private boolean inBounds(int row, int col) {
+        return row >= 0 && row < Math.sqrt(size) && col >= 0 && col < Math.sqrt(size);
+    }
+
     public void open(int row, int col) {
         if(isOpen(row, col))
             return;
@@ -39,26 +42,30 @@ public class Percolation {
         row--;
         col--;
 
-        opened[index(row, col)] = true;
+        int openIndex = index(row, col);
 
-        int index = index(row, col);
+        opened[openIndex] = true;
+
         int leftIndex = index(row, col - 1), rightIndex = index(row, col + 1);
         int upIndex = index(row - 1, col), downIndex = index(row + 1, col);
 
-        if(inBounds(leftIndex) && isOpen(leftIndex))
-            weightedQuickUnionUF.union(index, leftIndex);
-        if(inBounds(rightIndex) && isOpen(rightIndex))
-            weightedQuickUnionUF.union(index, rightIndex);
-        if(inBounds(upIndex) && isOpen(upIndex))
-            weightedQuickUnionUF.union(index, upIndex);
-        if(inBounds(downIndex) && isOpen(downIndex))
-            weightedQuickUnionUF.union(index, downIndex);
+        if(inBounds(row, col - 1) && isOpen(leftIndex))
+            weightedQuickUnionUF.union(openIndex, leftIndex);
+        if(inBounds(row, col + 1) && isOpen(rightIndex))
+            weightedQuickUnionUF.union(openIndex, rightIndex);
+        if(inBounds(row - 1, col) && isOpen(upIndex))
+            weightedQuickUnionUF.union(openIndex, upIndex);
+        if(inBounds(row + 1, col) && isOpen(downIndex))
+            weightedQuickUnionUF.union(openIndex, downIndex);
     }
 
     public boolean isOpen(int row, int col) {
         // grader starts arrays at 1
         row--;
         col--;
+
+        if(!inBounds(row, col))
+            throw new IllegalArgumentException();
 
         return opened[index(row, col)];
     }
@@ -67,14 +74,19 @@ public class Percolation {
         return opened[index];
     }
 
-    public boolean isFull(int row, int col) {
+    public boolean isFull(int row, int col)  {
         // grader starts arrays at 1
         row--;
         col--;
 
+        if(!inBounds(row, col))
+            throw new IllegalArgumentException();
+
         int cellIndex = index(row, col);
 
-        return inBounds(cellIndex) && isOpen(cellIndex) && weightedQuickUnionUF.connected(cellIndex, 0);
+
+
+        return isOpen(cellIndex) && weightedQuickUnionUF.connected(cellIndex, 0);
     }
 
     public int numberOfOpenSites() {
