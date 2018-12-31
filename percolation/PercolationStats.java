@@ -1,14 +1,15 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class PercolationStats {
 //    private Percolation percolationObject;
     private int trials;
     private int gridSize;
     private int n;
-    private ArrayList<Double> openSiteFractions;
+    private int trialsRan;
+    private double[] openSiteFractions;
 
     public static void main(String[] args) {
         if (args.length <= 1) {
@@ -45,7 +46,8 @@ public class PercolationStats {
         this.gridSize = n * n;
         this.n = n;
         this.trials = trials;
-        this.openSiteFractions = new ArrayList<>();
+        this.openSiteFractions = new double[trials];
+        this.trialsRan = 0;
 
         for(int i = 0; i < trials; i++)
             runTrial();
@@ -67,6 +69,8 @@ public class PercolationStats {
         Percolation percolationObject = new Percolation(n);
 
         int timesOpened = 0;
+//        int trialsRan = 0;
+
         while (!percolationObject.percolates()) {
             int randomIndex = StdRandom.uniform(0, gridSize);
 
@@ -81,27 +85,27 @@ public class PercolationStats {
             timesOpened++;
         }
 
-        openSiteFractions.add((double) timesOpened / gridSize);
+        openSiteFractions[trialsRan++] = ((double) timesOpened) / gridSize;
     }
 
-    private double[] getOpenSiteFractions() {
-        double[] doubleArray = new double[openSiteFractions.size()];
-        int i = 0;
-
-        for(double fraction : openSiteFractions)
-            doubleArray[i++] = fraction;
-
-        return doubleArray;
-    }
+//    private double[] getOpenSiteFractions() {
+//        double[] doubleArray = new double[openSiteFractions.size()];
+//        int i = 0;
+//
+//        for(double fraction : openSiteFractions)
+//            doubleArray[i++] = fraction;
+//
+//        return doubleArray;
+//    }
 
     // sample mean of percolation threshold
     public double mean() {
-        return StdStats.mean(getOpenSiteFractions());
+        return StdStats.mean(openSiteFractions);
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return StdStats.stddev(getOpenSiteFractions());
+        return StdStats.stddev(openSiteFractions);
     }
 
     // low  endpoint of 95% confidence interval
