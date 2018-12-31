@@ -9,6 +9,19 @@ public class Percolation {
         size = n * n;
         weightedQuickUnionUF = new WeightedQuickUnionUF(n * n);
         opened = new boolean[n * n];
+
+        createVirtualSites();
+    }
+
+    private void createVirtualSites() {
+        for(int i = 1; i < Math.sqrt(size); i++)
+            weightedQuickUnionUF.union(0, i);
+
+//        System.out.println(isOpen(1, 1));
+        for(int i = 0; i < Math.sqrt(size); i++) {
+            int cell = size - i - 2;
+            weightedQuickUnionUF.union(size - 1, cell);
+        }
     }
 
     private int index(int row, int col) {
@@ -61,15 +74,7 @@ public class Percolation {
 
         int cellIndex = index(row, col);
 
-        if(!inBounds(cellIndex) || !isOpen(cellIndex))
-            return false;
-
-        for(int topIndex = 0; topIndex < (int) Math.sqrt(size); topIndex++) {
-            if(weightedQuickUnionUF.connected(topIndex, cellIndex))
-                return true;
-        }
-
-        return false;
+        return inBounds(cellIndex) && isOpen(cellIndex) && weightedQuickUnionUF.connected(cellIndex, 0);
     }
 
     public int numberOfOpenSites() {
@@ -83,15 +88,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        for(int i = 0; i < Math.sqrt(size); i++) {
-            for(int j = 0; j < Math.sqrt(size); j++) {
-                int topIndex = index(0, i), bottomIndex = index(((int) Math.sqrt(size)) - 1, j);
-
-                if(isOpen(topIndex) && isOpen(bottomIndex) && weightedQuickUnionUF.connected(topIndex, bottomIndex))
-                    return true;
-            }
-        }
-
-        return false;
+        return weightedQuickUnionUF.connected(0, size - 1);
     }
 }

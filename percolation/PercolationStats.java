@@ -4,9 +4,10 @@ import edu.princeton.cs.algs4.StdStats;
 import java.util.ArrayList;
 
 public class PercolationStats {
-    private Percolation percolationObject;
+//    private Percolation percolationObject;
     private int trials;
     private int gridSize;
+    private int n;
     private ArrayList<Double> openSiteFractions;
 
     public static void main(String[] args) {
@@ -18,6 +19,8 @@ public class PercolationStats {
 
         int n = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
+
+//        System.out.println(args[1]);
 
         PercolationStats percolationStats = new PercolationStats(n, trials);
 
@@ -35,28 +38,50 @@ public class PercolationStats {
         System.out.println("]");
     }
 
+//    private ArrayList<Integer> blockedSites;
+
     // perform trials independent experiments on an n-by-n grid
     public PercolationStats(int n, int trials) {
-        this.gridSize = n;
+        this.gridSize = n * n;
+        this.n = n;
         this.trials = trials;
         this.openSiteFractions = new ArrayList<>();
-        this.percolationObject = new Percolation(n);
 
-        runTrials();
+        for(int i = 0; i < trials; i++)
+            runTrial();
     }
 
-    private void runTrials() {
-        int i, j;
+//    private int index(int row, int col) {
+//        return row * ((int) Math.sqrt(gridSize)) + col;
+//    }
 
-        while(!percolationObject.percolates() && trials > percolationObject.numberOfOpenSites()) {
-            i = StdRandom.uniform(gridSize) + 1;
-            j = StdRandom.uniform(gridSize) + 1;
+    private int deIndexCol(int index) {
+        return index % n;
+    }
 
-            if(!percolationObject.isOpen(i, j)) {
-                percolationObject.open(i, j);
-                openSiteFractions.add((double) percolationObject.numberOfOpenSites() / trials);
+    private int deIndexRow(int index) {
+        return (index - deIndexCol(index)) / n;
+    }
+
+    private void runTrial() {
+        Percolation percolationObject = new Percolation(n);
+
+        int timesOpened = 0;
+        while (!percolationObject.percolates()) {
+            int randomIndex = StdRandom.uniform(0, gridSize);
+
+            int row = deIndexRow(randomIndex) + 1;
+            int col = deIndexCol(randomIndex) + 1;
+
+            if(percolationObject.isOpen(row, col)) {
+                continue;
             }
+
+            percolationObject.open(row, col);
+            timesOpened++;
         }
+
+        openSiteFractions.add((double) timesOpened / gridSize);
     }
 
     private double[] getOpenSiteFractions() {
@@ -81,11 +106,11 @@ public class PercolationStats {
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - 1.96d * stddev() / Math.sqrt(trials);
+        return mean() - 1.96d * stddev() / trials;
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return mean() + 1.96d * stddev() / Math.sqrt(trials);
+        return mean() + 1.96d * stddev() / trials;
     }
 }
