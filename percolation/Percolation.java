@@ -84,8 +84,6 @@ public class Percolation {
 
         int cellIndex = index(row, col);
 
-
-
         return isOpen(cellIndex) && weightedQuickUnionUF.connected(cellIndex, 0);
     }
 
