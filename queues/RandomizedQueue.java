@@ -6,14 +6,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (optional)
     public static void main(String[] args) {
-        RandomizedQueue<Integer> queue = new RandomizedQueue();
+        RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
 
         queue.enqueue(1);
         queue.enqueue(2);
         queue.enqueue(3);
         queue.enqueue(4);
         queue.enqueue(5);
+        queue.enqueue(6);
+        queue.enqueue(7);
+        queue.enqueue(8);
+        queue.enqueue(9);
+        queue.enqueue(10);
 
+        System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
         System.out.println(queue.dequeue());
         System.out.println(queue.dequeue());
         System.out.println(queue.dequeue());
@@ -47,8 +57,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         Item[] buffer = (Item[]) new Object[size];
 
-        for(int i = 0; i < items.length; i++) {
-            if(i >= buffer.length) break;
+        for(int i = 0; i < size; i++) {
+            if(i >= items.length) break;
 
             buffer[i] = items[i];
         }
@@ -58,7 +68,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
-        if(size == items.length) {
+        if(size >= items.length) {
             resize(items.length * 2);
         }
 
@@ -87,7 +97,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if(randomIndex != lastItemIndex)
             swap(randomIndex, lastItemIndex);
 
-        if(size / items.length == 1 / 4) {
+        if(((double) size) / items.length == 0.25) {
             resize(items.length / 2);
         }
 
@@ -104,16 +114,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // return an independent iterator over items in random order
     public Iterator<Item> iterator() {
         return new Iterator<Item>() {
-            private int index = 0;
-
             @Override
             public boolean hasNext() {
-                return index < size;
+                return isEmpty();
             }
 
             @Override
             public Item next() {
-                return items[index++];
+                return dequeue();
             }
         };
     }
