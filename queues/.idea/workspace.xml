@@ -33,17 +33,20 @@
       <file leaf-file-name="Deque.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Deque.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1750">
-              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state relative-caret-position="1463">
+              <caret line="117" column="13" lean-forward="true" selection-start-line="117" selection-start-column="13" selection-end-line="117" selection-end-column="13" />
               <folding>
-                <element signature="e#1165#1166#0" expanded="true" />
-                <element signature="e#1205#1206#0" expanded="true" />
-                <element signature="e#1270#1271#0" expanded="true" />
-                <element signature="e#1310#1311#0" expanded="true" />
-                <element signature="e#1381#1382#0" expanded="true" />
-                <element signature="e#1408#1409#0" expanded="true" />
-                <element signature="e#2490#2491#0" expanded="true" />
-                <element signature="e#2538#2539#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1206#1207#0" expanded="true" />
+                <element signature="e#1246#1247#0" expanded="true" />
+                <element signature="e#1311#1312#0" expanded="true" />
+                <element signature="e#1351#1352#0" expanded="true" />
+                <element signature="e#1422#1423#0" expanded="true" />
+                <element signature="e#1449#1450#0" expanded="true" />
+                <element signature="e#2781#2782#0" expanded="true" />
+                <element signature="e#2854#2855#0" expanded="true" />
+                <element signature="e#2916#2917#0" expanded="true" />
+                <element signature="e#2988#2989#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,8 +55,8 @@
       <file leaf-file-name="RandomizedQueue.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RandomizedQueue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="51" column="10" lean-forward="false" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
+            <state relative-caret-position="196">
+              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
               <folding>
                 <element signature="e#324#325#0" expanded="true" />
                 <element signature="e#351#352#0" expanded="true" />
@@ -89,6 +92,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>headnext</find>
+      <find>addfirst</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -99,8 +103,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Deque.java" />
         <option value="$PROJECT_DIR$/RandomizedQueue.java" />
+        <option value="$PROJECT_DIR$/Deque.java" />
       </list>
     </option>
   </component>
@@ -308,25 +312,28 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Deque.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1750">
-          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state relative-caret-position="1463">
+          <caret line="117" column="13" lean-forward="true" selection-start-line="117" selection-start-column="13" selection-end-line="117" selection-end-column="13" />
           <folding>
-            <element signature="e#1165#1166#0" expanded="true" />
-            <element signature="e#1205#1206#0" expanded="true" />
-            <element signature="e#1270#1271#0" expanded="true" />
-            <element signature="e#1310#1311#0" expanded="true" />
-            <element signature="e#1381#1382#0" expanded="true" />
-            <element signature="e#1408#1409#0" expanded="true" />
-            <element signature="e#2490#2491#0" expanded="true" />
-            <element signature="e#2538#2539#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1206#1207#0" expanded="true" />
+            <element signature="e#1246#1247#0" expanded="true" />
+            <element signature="e#1311#1312#0" expanded="true" />
+            <element signature="e#1351#1352#0" expanded="true" />
+            <element signature="e#1422#1423#0" expanded="true" />
+            <element signature="e#1449#1450#0" expanded="true" />
+            <element signature="e#2781#2782#0" expanded="true" />
+            <element signature="e#2854#2855#0" expanded="true" />
+            <element signature="e#2916#2917#0" expanded="true" />
+            <element signature="e#2988#2989#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RandomizedQueue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="51" column="10" lean-forward="false" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
+        <state relative-caret-position="196">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding>
             <element signature="e#324#325#0" expanded="true" />
             <element signature="e#351#352#0" expanded="true" />

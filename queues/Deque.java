@@ -5,6 +5,7 @@
  **************************************************************************** */
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
     public static void main(String[] args) {
@@ -63,6 +64,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
     // add the item to the front
     public void addFirst(Item item) {
+        if(item == null) throw new IllegalArgumentException();
+        
         Node newNode = new Node(item);
         newNode.next = head;
         head.prev = newNode;
@@ -71,6 +74,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
     // add the item to the end
     public void addLast(Item item) {
+        if(item == null) throw new IllegalArgumentException();
+
         Node newNode = new Node(item);
         newNode.prev = tail;
 
@@ -80,6 +85,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
     // remove and return the item from the front
     public Item removeFirst() {
+        if(isEmpty()) throw new NoSuchElementException();
+
         Item item = head.item;
         head = head.next;
         head.prev = null;
@@ -89,6 +96,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
     // remove and return the item from the end
     public Item removeLast() {
+        if(isEmpty()) throw new NoSuchElementException();
+
         Item item = tail.item;
         tail = tail.prev;
         tail.next = null;
@@ -104,12 +113,19 @@ public class Deque<Item> implements Iterable<Item> {
             private Node node = head;
 
             @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
             public boolean hasNext() {
-                return isEmpty();
+                return node != null && node.next != null;
             }
 
             @Override
             public Item next() {
+                if(!hasNext()) throw new NoSuchElementException();
+
                 Item item = node.item;
                 node = node.next;
 
