@@ -144,7 +144,7 @@ public class Deque<Item> implements Iterable<Item> {
 
             @Override
             public Item next() {
-                if(!hasNext()) throw new NoSuchElementException();
+                if(!hasNext()) throw new ArrayIndexOutOfBoundsException();
 
                 Item item = node.item;
                 node = node.next;

@@ -22,9 +22,8 @@ public class Permutation {
     private static void getAndPrintCharacters(int k) {
         RandomizedQueue<String> randomizedQueue = new RandomizedQueue<>();
 
-        for(int i = 0; i < k; i++) {
-            String arg = StdIn.readString();
-            randomizedQueue.enqueue(arg);
+        while(!StdIn.isEmpty()) {
+            randomizedQueue.enqueue(StdIn.readString());
         }
 
         for(int i = 0; i < k; i++)
