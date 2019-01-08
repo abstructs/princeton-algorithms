@@ -1,17 +1,8 @@
-/* *****************************************************************************
- *  Name:
- *  Date:
- *  Description:
- **************************************************************************** */
-
 import edu.princeton.cs.algs4.StdIn;
-
 import java.util.ArrayList;
 
 public class BruteCollinearPoints {
     public static void main(String[] args) {
-        final int N = 24;
-
         ArrayList<Point> alPoints = new ArrayList<>();
 
         StdIn.readLine();
@@ -50,7 +41,9 @@ public class BruteCollinearPoints {
         @Override
         public boolean equals(Object that) {
             if(that instanceof PointPair) {
-                return p1.compareTo(p2) == 0;
+                PointPair obj = (PointPair) that;
+
+                return p1.compareTo(obj.p1) == 0 && p2.compareTo(obj.p2) == 0;
             }
 
             return false;
@@ -81,7 +74,7 @@ public class BruteCollinearPoints {
     private boolean hasNoDuplicatesOrNulls(Object[] arr) {
         for(int i = 0; i < arr.length; i++) {
             if(arr[i] == null) return false;
-            
+
             for(int j = i + 1; j < arr.length; j++) {
                 if(arr[i].equals(arr[j])) {
                     return false;
@@ -91,11 +84,6 @@ public class BruteCollinearPoints {
 
         return true;
     }
-
-//    private void printList(Object[] arr) {
-//        for(Object o : arr)
-//            System.out.println(o);
-//    }
 
     private LineSegment[] toLineSet(ArrayList<PointPair> pairs) {
         ArrayList<PointPair> alPairs = new ArrayList<>();
