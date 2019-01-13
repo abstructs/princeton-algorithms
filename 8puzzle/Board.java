@@ -19,7 +19,7 @@ public class Board {
             for (int j = 0; j < boardSize; j++) {
                 int position = i * boardSize + j;
                 board[i][j] = position;
-//                System.out.println(i * boardSize + j + 1);
+//                System.out.println(i * boardSize + j + 1);5
             }
         }
 
@@ -79,9 +79,7 @@ public class Board {
                 int expectedPositon = expectedPositon(i, j);
                 int position = blocks[i][j];
 
-                if(position != expectedPositon(i, j)) {
-                    totalDistance += Math.abs(expectedPositon - position);
-                }
+                totalDistance += Math.abs(expectedPositon - position);
             }
         }
 
@@ -143,9 +141,7 @@ public class Board {
         if(y instanceof Board) {
             Board yBoard = (Board) y;
 
-            if(dimension() != yBoard.dimension()) {
-                return false;
-            }
+            if(dimension() != yBoard.dimension()) return false;
 
             int[][] yBlocks = yBoard.blocks;
 
@@ -182,21 +178,10 @@ public class Board {
 
         ArrayList<Board> boards = new ArrayList<>();
 
-        if(leftBoard != null) {
-            boards.add(leftBoard);
-        }
-
-        if(rightBoard != null) {
-            boards.add(rightBoard);
-        }
-
-        if(topBoard != null) {
-            boards.add(topBoard);
-        }
-
-        if(bottomBoard != null) {
-            boards.add(bottomBoard);
-        }
+        if(leftBoard != null) boards.add(leftBoard);
+        if(rightBoard != null) boards.add(rightBoard);
+        if(topBoard != null) boards.add(topBoard);
+        if(bottomBoard != null) boards.add(bottomBoard);
 
         return boards;
     }
