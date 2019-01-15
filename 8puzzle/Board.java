@@ -6,7 +6,7 @@
 
 import java.util.ArrayList;
 
-public class Board implements Comparable<Board> {
+public class Board {
     // unit tests (not graded)
     public static void main(String[] args) {
         int boardSize = 3;
@@ -29,19 +29,26 @@ public class Board implements Comparable<Board> {
     }
 
     private int[][] blocks;
-    private int manhattan;
     private final int BLANK_VAL = 0;
     private int BLANK_ROW;
     private int BLANK_COL;
+    private boolean isGoal;
+    private Iterable<Board> neighbors;
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
         this.blocks = new int[blocks.length][blocks.length];
 
+        this.isGoal = true;
+
         for(int i = 0; i < blocks.length; i++) {
             for(int j = 0; j < blocks.length; j++) {
                 int blockValue = blocks[i][j];
+
+                if(blockValue != expectedValue(i, j)) {
+                    this.isGoal = false;
+                }
 
                 this.blocks[i][j] = blockValue;
 
@@ -51,14 +58,12 @@ public class Board implements Comparable<Board> {
                 }
             }
         }
-
-        manhattan = manhattan();
     }
 
     // board dimension n
 
     public int dimension() {
-        return 2;
+        return blocks.length;
     }
 
     // number of blocks out of place
@@ -72,7 +77,7 @@ public class Board implements Comparable<Board> {
 
                 if(actualValue == BLANK_VAL) continue;
 
-                if(actualValue != expectedValue(i, j)) {
+                if(actualValue != expectedValue) {
                     blocksOutOfPlace++;
                 }
             }
@@ -87,12 +92,11 @@ public class Board implements Comparable<Board> {
 
         for(int i = 0; i < blocks.length; i++) {
             for(int j = 0; j < blocks.length; j++) {
-                int expectedValue = expectedValue(i, j);
                 int actualValue = blocks[i][j];
 
                 if(actualValue == BLANK_VAL) continue;
 
-                totalDistance += Math.abs(expectedValue - actualValue);
+                totalDistance += Math.abs(expectedRow(actualValue) - i) + Math.abs(expectedCol(actualValue) - j);
             }
         }
 
@@ -108,19 +112,19 @@ public class Board implements Comparable<Board> {
         }
     }
 
+    private int expectedCol(int value) {
+        if(value == BLANK_VAL) return blocks.length - 1;
+        return (value - 1) % blocks.length;
+    }
+
+    private int expectedRow(int value) {
+        if(value == BLANK_VAL) return blocks.length - 1;
+        return (value - 1) / blocks.length;
+    }
+
     // is this board the goal board?
     public boolean isGoal() {
-        for(int i = 0; i < blocks.length; i++) {
-            for(int j = 0; j < blocks.length; j++) {
-                int position = blocks[i][j];
-
-                if(position != expectedValue(i, j)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return this.isGoal;
     }
 
     private void swap(int row1, int col1, int row2, int col2) {
@@ -143,12 +147,13 @@ public class Board implements Comparable<Board> {
     public Board twin() {
         Board board = new Board(blocks);
 
+        // allows swaps to work with 2 by 2 boards up to n by n
         int row1 = 0;
-        int col1 = BLANK_COL == 0 ? 1 : 0;
+        int col1 = BLANK_ROW == 0 && BLANK_COL == 0 ? 1 : 0;
 
-        int row2 = 0;
-        int col2 = BLANK_COL == 0 ? 2 : 1;
-        
+        int row2 = 1;
+        int col2 = BLANK_ROW == 1 && BLANK_COL == 0 ? 1 : 0;
+
         board.swap(row1, col1, row2, col2);
 
         return board;
@@ -156,6 +161,8 @@ public class Board implements Comparable<Board> {
 
     // does this board equal y?
     public boolean equals(Object y) {
+        if(y == null) return false;
+
         if(y instanceof Board) {
             Board yBoard = (Board) y;
 
@@ -170,9 +177,11 @@ public class Board implements Comparable<Board> {
                     }
                 }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private Board swapWithBlank(int row, int col) {
@@ -189,6 +198,8 @@ public class Board implements Comparable<Board> {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
+        if(this.neighbors != null) return this.neighbors;
+
         Board leftBoard = swapWithBlank(BLANK_ROW, BLANK_COL - 1);
         Board rightBoard = swapWithBlank(BLANK_ROW, BLANK_COL + 1);
         Board topBoard = swapWithBlank(BLANK_ROW - 1, BLANK_COL);
@@ -201,29 +212,22 @@ public class Board implements Comparable<Board> {
         if(topBoard != null) boards.add(topBoard);
         if(bottomBoard != null) boards.add(bottomBoard);
 
+        this.neighbors = boards;
+
         return boards;
     }
 
     // string representation of this board (in the output format specified below)
     public String toString() {
         StringBuilder builder = new StringBuilder();
-
-        for(int i = 0; i < blocks.length; i++) {
-            builder.append("\n");
-            for(int j = 0; j < blocks.length; j++) {
-                builder.append(blocks[i][j]);
-                builder.append(" ");
+        builder.append(blocks.length + "\n");
+        for (int i = 0; i < blocks.length; i++) {
+            for (int j = 0; j < blocks.length; j++) {
+                builder.append(String.format("%2d ", blocks[i][j]));
             }
-
             builder.append("\n");
         }
 
         return builder.toString();
-    }
-
-    @Override
-    public int compareTo(Board board) {
-        if(board == null) return 1;
-        return Integer.compare(this.manhattan, board.manhattan);
     }
 }
