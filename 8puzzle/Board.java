@@ -33,6 +33,7 @@ public class Board {
     private int BLANK_ROW;
     private int BLANK_COL;
     private boolean isGoal;
+    private int manhattan;
     private Iterable<Board> neighbors;
 
     // construct a board from an n-by-n array of blocks
@@ -56,6 +57,8 @@ public class Board {
                     this.BLANK_ROW = i;
                     this.BLANK_COL = j;
                 }
+
+                this.manhattan += partialManhattan(i, j);
             }
         }
     }
@@ -86,21 +89,17 @@ public class Board {
         return blocksOutOfPlace;
     }
 
+    private int partialManhattan(int i, int j) {
+        int actualValue = blocks[i][j];
+
+        if(actualValue == BLANK_VAL) return 0;
+
+        return Math.abs(expectedRow(actualValue) - i) + Math.abs(expectedCol(actualValue) - j);
+    }
+
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        int totalDistance = 0;
-
-        for(int i = 0; i < blocks.length; i++) {
-            for(int j = 0; j < blocks.length; j++) {
-                int actualValue = blocks[i][j];
-
-                if(actualValue == BLANK_VAL) continue;
-
-                totalDistance += Math.abs(expectedRow(actualValue) - i) + Math.abs(expectedCol(actualValue) - j);
-            }
-        }
-
-        return totalDistance;
+        return this.manhattan;
     }
 
     private int expectedValue(int i, int j) {

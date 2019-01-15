@@ -75,6 +75,20 @@ public class Solver {
             this.priority = board.manhattan() + moves;
         }
 
+        private boolean isPredesessor(Board board) {
+            SearchNode temp = predesessor;
+
+            while(temp != null) {
+                if(board.equals(temp.getBoard())) {
+                    return true;
+                }
+
+                temp = temp.predesessor;
+            }
+
+            return false;
+        }
+
         private Board getBoard() {
             return this.board;
         }
@@ -85,62 +99,79 @@ public class Solver {
         }
     }
 
-
-    private MinPQ<SearchNode> minPQ;
-
     private Stack<Board> solution;
     private SearchNode finalSearchNode;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        minPQ = new MinPQ<>(1);
+        if(initial == null) throw new IllegalArgumentException();
 
         this.solution = getSolution(initial);
     }
 
     private Stack<Board> getSolution(Board inital) {
-        SearchNode currentSearchNode = new SearchNode(inital, null);
-        Board currentBoard = currentSearchNode.getBoard();
-        ArrayList<Board> visitedBoards = new ArrayList<>();
+//        SearchNode currentSearchNode = new SearchNode(inital, null);
+//        Board currentBoard;
 
-        SearchNode twinSearchNode = new SearchNode(inital.twin(), null);
-        Board twinBoard = twinSearchNode.getBoard();
-        ArrayList<Board> twinVisitedBoards = new ArrayList<>();
+//        SearchNode twinSearchNode = new SearchNode(inital.twin(), null);
+//        Board twinBoard;
+
+        ArrayList<Board> visitedNodes = new ArrayList<>();
+        ArrayList<Board> twinVisitedNodes = new ArrayList<>();
+
+//        visitedBoards.add(currentSearchNode);
+
+//        System.out.println(visitedBoards.contains(currentSearchNode));
+//        ArrayList<Board> twinVisitedBoards = new ArrayList<>();
+//
+        MinPQ<SearchNode> minPQ = new MinPQ<>(1);
         MinPQ<SearchNode> twinPQ = new MinPQ<>(1);
+//
 
-        while(!currentBoard.isGoal() && !twinBoard.isGoal()) {
+        minPQ.insert(new SearchNode(inital, null));
+        twinPQ.insert(new SearchNode(inital.twin(), null));
+
+//        visitedNodes.add(currentBoard);
+
+//        System.out.println(currentBoard.manhattan());
+//        visitedNodes.add(currentSearchNode);
+//        twinPQ.insert(twinSearchNode);
+
+//        int count = 0;
+
+        SearchNode currentSearchNode;
+        Board currentBoard;
+
+        SearchNode twinSearchNode;
+        Board twinBoard;
+
+        do {
+            currentSearchNode = minPQ.delMin();
+            currentBoard = currentSearchNode.getBoard();
+
+            twinSearchNode = twinPQ.delMin();
+            twinBoard = twinSearchNode.getBoard();
+
             for (Board neighbor : currentBoard.neighbors()) {
-                if (!visitedBoards.contains(neighbor)) {
-                    visitedBoards.add(neighbor);
-
+                if(!currentSearchNode.isPredesessor(neighbor)) {
                     minPQ.insert(new SearchNode(neighbor, currentSearchNode));
                 }
             }
 
             for (Board neighbor : twinBoard.neighbors()) {
-                if (!twinVisitedBoards.contains(neighbor)) {
-                    twinVisitedBoards.add(neighbor);
-
+                if(!twinSearchNode.isPredesessor(neighbor)) {
                     twinPQ.insert(new SearchNode(neighbor, twinSearchNode));
                 }
             }
 
-            if(minPQ.isEmpty()) return null;
-            currentSearchNode = minPQ.delMin();
-            currentBoard = currentSearchNode.getBoard();
-
-            if(!twinPQ.isEmpty()) {
-                twinSearchNode = twinPQ.delMin();
-                twinBoard = twinSearchNode.getBoard();
-            }
-        }
-
-        this.finalSearchNode = currentSearchNode;
+        } while(!currentBoard.isGoal() && !twinBoard.isGoal());
 
         // no solution found
         if(twinBoard.isGoal()) {
             return null;
         }
+
+        this.finalSearchNode = currentSearchNode;
 
         Stack<Board> solution = new Stack<>();
 
@@ -159,7 +190,7 @@ public class Solver {
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return solution != null ? finalSearchNode.moves : -1;
+        return finalSearchNode != null ? finalSearchNode.moves : -1;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
